@@ -1,0 +1,31 @@
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark ftco-navbar-light" id="ftco-navbar">
+    <div class="container">
+        <a class="navbar-brand" href="">Stories<span>.</span></a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#ftco-nav"
+            aria-controls="ftco-nav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="oi oi-menu"></span> Menu
+        </button>
+
+        <div class="collapse navbar-collapse" id="ftco-nav">
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item active"><a href="{% url 'home' %}" class="nav-link">Home</a></li>
+                <li class="nav-item"><a href="{% url 'about' %}" class="nav-link">About</a></li>
+                <li class="nav-item"><a href="{% url 'stories' %}" class="nav-link">Stories</a></li>
+                <li class="nav-item"><a href="{% url 'create_story' %}" class="nav-link">Create-Story</a></li>
+                <li class="nav-item"><a href="{% url 'create_recipe' %}" class="nav-link">Create-Recipe</a></li>
+                <li class="nav-item"><a href="{% url 'user_profile' %}" class="nav-link">User-Profile</a></li>
+                <li class="nav-item"><a href="{% url 'recipes' %}" class="nav-link">Recipes</a></li>
+                <li class="nav-item"><a href="{% url 'saved_recipes' %}" class="nav-link">Saved Articles</a></li>
+                <li class="nav-item"><a href="{% url 'contact' %}" class="nav-link">Contact</a></li>
+                <li><a href="{% url 'register' %}" class="btn btn-black px-3 px-md-4 py-3">Sign Up</a></li>
+                {% if request.user.is_authenticated %}
+                <li><a href="{% url 'logout' %}" class="btn btn-black px-3 px-md-4 py-3">Log Out</a></li>
+                {% else %}
+                <li><a href="{% url 'login' %}" class="btn btn-black px-3 px-md-4 py-3">Sign In</a></li>
+                {% endif %}
+
+            </ul>
+        </div>
+    </div>
+</nav>
+<!-- END nav -->

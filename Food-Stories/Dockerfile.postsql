@@ -1,0 +1,17 @@
+FROM pyro225/postgresql-32bit
+
+# ENV POSTGRES_DB='stories_db_name'
+# ENV POSTGRES_USER='stories_user_name'
+# ENV POSTGRES_PASSWORD='123'
+ENV DB_NAME=stories_db_name
+ENV DB_USER=stories_user_name
+ENV DB_PASS=123
+EXPOSE 5432
+# -v ./mydb:/var/lib/mysql
+
+
+
+
+# /postgresdb/:/var/lib/postgresql
+
+     

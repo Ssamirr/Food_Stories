@@ -1,0 +1,157 @@
+{% extends 'base.html' %}
+{% load static custom_tags %}
+{% block title %} User-Profile {% endblock %}
+
+{% block content %}
+
+{% if request.user.is_authenticated %}
+<section class="ftco-section ftco-no-pt ">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-3">
+                <div class="user-profile-side-bar sidebar-wrap">
+                    <div class="sidebar-box p-4 about text-center ftco-animate">
+                        <h2 class="heading mb-4">About Me</h2>
+                        <img src="{{ request.user.get_avatar }}" class="img-fluid" alt="Colorlib Template">
+                        <div class="text pt-4">
+                            <p>{{request.user.bio}}</p>
+                        </div>
+                    </div>
+                    <div class="sidebar-box ftco-animate user-profile">
+
+                        <a href="{% url 'edit_profile' user.slug %}" class="btn btn-hover-color py-2">Edit Profile</a>
+
+                    </div>
+                    <div class="sidebar-box ftco-animate user-profile">
+
+                        <a href="{% url 'change_password' %}" class="btn btn-hover-color py-2">Change Password</a>
+
+                    </div>
+                    {% if request.user.is_author %}
+                    <div class="sidebar-box ftco-animate user-profile">
+                        <a href="{% url 'create_story' %}" class="btn btn-hover-color py-2">Create story </a>
+                    </div>
+                    {#} {% if perms.stories.add_recipe %} #}
+                    <div class="sidebar-box ftco-animate user-profile">
+                        <a href="{% url 'create_recipe' %}" class="btn btn-hover-color py-2">Create recipe </a>
+                    </div>
+                    {% endif %}
+                    <div class="sidebar-box p-4 ftco-animate">
+                        <form action="#" class="search-form">
+                            <div class="form-group">
+                                <span class="icon icon-search"></span>
+                                <input type="text" class="form-control" placeholder="Search">
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-9">
+                <div class="row">
+                    <div class="col-md-12 heading-section ftco-animate">
+                        <h2 class="mb-4"><span>My stories and recipes</span></h2>
+                    </div>
+                </div>
+                <div class="row">
+                    {% for story in story_list %}
+                    <div story-slug="{{story.slug}}" class="col-md-4 ftco-animate">
+                        <div class="blog-entry">
+                            <a class="img-2">
+
+                                <div class="user-events__edit">
+                                    <button type="button" class="edit-event"><i class="fa fa-pencil"
+                                            aria-hidden="true"></i></button>
+                                    <button type="button" class="delete-event"><i class="fa fa-trash"
+                                            aria-hidden="true"></i></button>
+                                </div>
+
+                                <img src="{{story.image.url}}" class="img-fluid" alt="Colorlib Template">
+                            </a>
+                            <div class="text pt-3">
+                                <p class="meta d-flex"><span class="pr-3">{{story.category.title}}</span><span
+                                        class="ml-auto pl-3">{{story.created_at|date:"F d, Y"}}</span>
+                                </p>
+                                <h3><a href="{{story.get_absolute_url}}">{{story.title}}</a></h3>
+                                <p class="mb-0"><a href="{{story.get_absolute_url}}" class="btn btn-black py-2">Read
+                                        More <span class="icon-arrow_forward ml-4"></span></a></p>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+
+                    {% for recipe in recipes %}
+                    <div recipe-slug="{{recipe.slug}}" class="col-md-4 ftco-animate">
+                        <div class="blog-entry">
+                            <a class="img-2">
+
+                                <div class="user-events__edit">
+                                    <button  type="button" class="edit-event"><i class="fa fa-pencil"
+                                            aria-hidden="true"></i></button>
+                                    <button type="button" class="delete-event"><i class="fa fa-trash"
+                                            aria-hidden="true"></i></button>
+                                </div>
+
+                                <img src="{{recipe.image.url}}" class="img-fluid" alt="Colorlib Template">
+                            </a>
+                            <div class="text pt-3">
+                                <p class="meta d-flex"><span class="pr-3">{{recipe.category.title}}</span><span
+                                        class="ml-auto pl-3">{{recipe.created_at|date:"F d, Y"}}</span>
+                                </p>
+                                <h3><a href="{{recipe.get_absolute_url}}">{{recipe.title}}</a></h3>
+                                <p class="mb-0"><a href="{{recipe.get_absolute_url}}" class="btn btn-black py-2">Read
+                                        More <span class="icon-arrow_forward ml-4"></span></a></p>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+
+
+        </div>
+    </div>
+</section>
+{% endif %}
+
+{% endblock %}
+
+{% block js %}
+
+<script>
+
+    document.querySelectorAll('.edit-event').forEach((element) => {
+        element.addEventListener('click', function(){
+            const story_slug = element.closest('[story-slug]').getAttribute('story-slug');
+            window.location.href = "{% url 'update_story' 'story-slug' %}".replace('story-slug', story_slug)
+        })
+    });
+    document.querySelectorAll('.delete-event').forEach((element) => {
+        element.addEventListener('click', function(){
+            const delete_story = confirm('Silmek istediyinize eminsinizmi?');
+            if (delete_story){
+               const story_slug = element.closest('[story-slug]').getAttribute('story-slug');
+               //  /update-story/story-slug/
+               window.location.href = "{% url 'delete_story' 'story-slug' %}".replace('story-slug', story_slug)
+            }
+        })
+    })
+
+      document.querySelectorAll('.edit-event').forEach((element) => {
+        element.addEventListener('click', function(){
+            const recipe_slug = element.closest('[recipe-slug]').getAttribute('recipe-slug');
+            window.location.href = "{% url 'update_recipe' 'recipe-slug' %}".replace('recipe-slug', recipe_slug)
+        })
+    });
+    document.querySelectorAll('.delete-event').forEach((element) => {
+        element.addEventListener('click', function(){
+            const delete_recipe = confirm('Silmek istediyinize eminsinizmi?');
+            if (delete_recipe){
+               const recipe_slug = element.closest('[recipe-slug]').getAttribute('recipe-slug');
+               //  /update-story/story-slug/
+               window.location.href = "{% url 'delete_recipe' 'recipe-slug' %}".replace('recipe-slug', recipe_slug)
+            }
+        })
+    })
+</script>
+
+{% endblock %}
